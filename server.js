@@ -28,23 +28,30 @@ app.use(express.urlencoded({ extended: true }));
 });
 
  app.use(express.static(path.join(__dirname, "public")));
-
- const db = mysql.createPool({
+const db = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  port: process.env.DB_PORT,
-  ssl: { rejectUnauthorized: false }  
+  port: parseInt(process.env.DB_PORT, 10),
+  ssl: { rejectUnauthorized: false }
 });
 
-db.getConnection((err) => {
+db.getConnection((err, connection) => {
   if (err) {
     console.error("DB connection failed:", err);
+    // Still start the server to avoid hanging Railway
   } else {
     console.log("MySQL Connected!");
+    connection.release();
   }
+
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
 });
+
  
 app.get("/api/tenants", (req, res) => {
   db.query("SELECT * FROM tenants", (err, results) => {
@@ -112,7 +119,4 @@ app.get("/api/tenants", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
- const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+ 
