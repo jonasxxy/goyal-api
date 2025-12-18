@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Goyal Boarding House - API Documentation</title>
+<style>
+body { font-family: Arial, sans-serif; padding: 20px; background: #f4f6f8; }
+h1 { color: #333; }
+h2 { color: #555; margin-top: 20px; }
+pre { background: #eee; padding: 10px; border-radius: 5px; overflow-x: auto; }
+code { background: #eee; padding: 2px 4px; border-radius: 3px; }
+a { color: #007BFF; text-decoration: none; margin-bottom: 20px; display: inline-block; }
+a:hover { text-decoration: underline; }
+table { border-collapse: collapse; width: 100%; margin-top: 10px; background: white; }
+th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+th { background: #f0f0f0; }
+</style>
+</head>
+<body>
+
+<h1>Goyal Boarding House - API Documentation</h1>
+<a href="index.html">Back to Home</a>
+
+<h2>Base URL</h2>
+<pre>http://localhost:5000/api/tenants</pre>
+
+<h2>GET All Tenants</h2>
+<pre>
+GET /api/tenants
+Response: 200 OK
+[
+  {
+    "id": 4,
+    "name": "JONA PALACIO",
+    "room_number": "2",
+    "contact": "09560376568",
+    "monthly_rent": "1500.00",
+    "status": "Active"
+  },
+  {
+    "id": 6,
+    "name": "Maurrien Pabilane",
+    "room_number": "4",
+    "contact": "09608422899",
+    "monthly_rent": "1500.00",
+    "status": "Active"
+  }
+]
+</pre>
+
+<h2>GET Tenant by ID</h2>
+<pre>
+GET /api/tenants/:id
+Example: GET /api/tenants/4
+Response: 200 OK
+{
+  "id": 4,
+  "name": "JONA PALACIO",
+  "room_number": "2",
+  "contact": "09560376568",
+  "monthly_rent": "1500.00",
+  "status": "Active"
+}
+</pre>
+
+<h2>POST Create Tenant</h2>
+<pre>
+POST /api/tenants
+Headers: Content-Type: application/json
+Body:
+{
+  "name": "Juan Dela Cruz",
+  "room_number": "10",
+  "contact": "09123456789",
+  "monthly_rent": 1800
+}
+Response: 201 Created
+{
+  "message": "Tenant created successfully",
+  "id": 8
+}
+</pre>
+
+<h2>PUT Update Tenant</h2>
+<pre>
+PUT /api/tenants/:id
+Example: PUT /api/tenants/4
+Headers: Content-Type: application/json
+Body:
+{
+  "name": "JONA PALACIO",
+  "room_number": "2",
+  "contact": "09999999999",
+  "monthly_rent": 1600
+}
+Response: 200 OK
+{
+  "message": "Tenant updated successfully"
+}
+</pre>
+
+<h2>DELETE Tenant</h2>
+<pre>
+DELETE /api/tenants/:id
+Example: DELETE /api/tenants/7
+Response: 200 OK
+{
+  "message": "Tenant deleted successfully"
+}
+</pre>
+
+<h2>XML Support</h2>
+<p>You can also send POST/PUT requests using XML. Example:</p>
+<pre>
+Headers: Content-Type: application/xml
+Body:
+&lt;tenant&gt;
+  &lt;name&gt;Zoren M&lt;/name&gt;
+  &lt;room_number&gt;11&lt;/room_number&gt;
+  &lt;contact&gt;09989874321&lt;/contact&gt;
+  &lt;monthly_rent&gt;2000&lt;/monthly_rent&gt;
+&lt;/tenant&gt;
+
+Response:
+{
+  "message": "Tenant created successfully",
+  "id": 9
+}
+</pre>
+
+</body>
+</html>
