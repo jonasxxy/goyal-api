@@ -30,7 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
 
-db.getConnection((err, connection) => {
+app.getConnection((err, connection) => {
   if (err) {
     console.error("DB connection failed:", err);
    } else {
