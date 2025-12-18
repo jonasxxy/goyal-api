@@ -32,21 +32,22 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, "public")));
 
 const db = mysql.createPool({
-  host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASSWORD || "",
-  database: process.env.DB_NAME || "goyal_boarding"
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT, // important!
+  ssl: { rejectUnauthorized: false }
 });
 
 db.getConnection((err) => {
   if (err) {
-    console.error(" DB connection failed:", err);
+    console.error("DB connection failed:", err);
   } else {
-    console.log(" MySQL Connected!");
+    console.log("MySQL Connected!");
   }
 });
 
- 
 
  app.get("/api/tenants", (req, res) => {
   db.query("SELECT * FROM tenants", (err, results) => {
@@ -129,8 +130,8 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(` Server running at http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
+
