@@ -29,15 +29,6 @@ app.use(express.urlencoded({ extended: true }));
 
  app.use(express.static(path.join(__dirname, "public")));
 
- db.getConnection((err, connection) => {
-  if (err) {
-    console.error(" DB connection failed:", err.message);
-  } else {
-    console.log(" MySQL Connected!");
-    connection.release();
-  }
-});
-
  app.get("/ping", (req, res) => res.send("pong"));
 
  app.get("/api/tenants", (req, res) => {
@@ -98,7 +89,16 @@ app.delete("/api/tenants/:id", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
- const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+ db.getConnection((err, connection) => {
+  if (err) {
+    console.error("❌ DB connection failed:", err.message);
+    process.exit(1);  
+  } else {
+    console.log(" MySQL Connected!");
+    connection.release();
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  }
 });
