@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const xml2js = require("xml2js");
-const db = require("./db");
+const db = require("./config/db");
 
 const app = express();
 
