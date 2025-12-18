@@ -29,15 +29,22 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, "public")));
 
+const db = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: parseInt(process.env.DB_PORT, 10),
+  ssl: { rejectUnauthorized: false }
+});
 
-app.getConnection((err, connection) => {
+ db.getConnection((err, connection) => {
   if (err) {
-    console.error("DB connection failed:", err);
-   } else {
-    console.log("MySQL Connected!");
+    console.error(" DB connection failed:", err.message);
+  } else {
+    console.log(" MySQL Connected!");
     connection.release();
   }
-
  
 app.get("/api/tenants", (req, res) => {
   db.query("SELECT * FROM tenants", (err, results) => {
